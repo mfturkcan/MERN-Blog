@@ -229,3 +229,36 @@ body {
     text-align: center;
     padding-top: 5px;
   }
+
+
+/*
+---------
+  Auth pages
+---------
+*/
+
+div.auth{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  align-self: center;
+}
+
+input.ant-input{
+  flex-flow: column wrap;
+  display: flex;
+  margin: 15px 20px 0px 20px;
+  width: 300px;
+}
+
+div.auth button{
+  display: flex;
+  margin: 20px;
+} 
+
+.home-card-posts{
+  margin: 20px 20px;
+  display: flex;
+  flex-flow: row wrap;
+}
+

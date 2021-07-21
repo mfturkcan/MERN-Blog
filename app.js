@@ -10,6 +10,15 @@ const passportLocalMongoose = require("passport-local-mongoose");
 
 const app = express();
 
+app.use(session({
+    name: "connectsid",
+    secret: process.env.SECRET,
+    resave: false,
+    secure: false,
+    saveUninitialized: false,
+    cookie: {httpOnly: false, secure: false},
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extented: true}));
 app.use(cors({
@@ -27,13 +36,7 @@ app.use(function(req,res,next){
     next();
 });
 
-app.use(session({
-    secret: process.env.SECRET,
-    resave: false,
-    secure: true,
-    saveUninitialized: true,
-    name: "connectsid",
-}));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -137,9 +140,15 @@ app.route("/register")
 
 app.get("/logout", function(req, res){
     req.logout();
-    console.log(req.isAuthenticated());
-    res.clearCookie('connectsid');
-    res.send(true);
+    if(!req.isAuthenticated()){
+        req.session.destroy(err => {
+            if(!err){res.clearCookie('connectsid'); res.send(true);}
+            else{
+                console.log("Error occured while log out!");
+                res.send(false);
+            }
+        });
+    }
 });
 
 

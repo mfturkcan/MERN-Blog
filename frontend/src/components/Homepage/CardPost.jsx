@@ -1,7 +1,6 @@
-import { Card, Image } from 'antd';
+import { Card } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
 
 export default class CardPost extends Component{
 
@@ -13,12 +12,12 @@ export default class CardPost extends Component{
 
     render(){
         return(
-            <Card cover={
-                <Image src={this.props.imgUrl} width={200} height={200}>
-                    
-                </Image>
-            } hoverable>
-                <Meta title={this.props.title} description={this.props.content}/>
+            <Card style={{width:300}} cover={<img
+                alt="example"
+                src={this.props.imgUrl}
+              />}
+            hoverable>
+                <Meta title={this.props.title.toUpperCase()} description={this.props.content}/>
             </Card>
         );
     }

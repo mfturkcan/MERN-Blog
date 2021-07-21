@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Anchor, Drawer, Button} from 'antd';
 import {MenuOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom'; 
 import "antd/dist/antd.css";
 
-const { Link: AnchorLink} = Anchor;
+const { Link: AnchorLink } = Anchor;
 
 function AppHeader(props) {
   const [visible, setVisible] = useState(false);
+  const [logStatus, setLogStatus] = useState(props.isLoggedIn);
+  
+  useEffect(()=>{
+    setLogStatus(props.isLoggedIn);
+  },[props.isLoggedIn]);
 
   const showDrawer = () => {
     setVisible(true);
@@ -29,8 +34,12 @@ function AppHeader(props) {
             <AnchorLink href="/" title="Home"/>
             <AnchorLink href="/about" title="About"/>
             <AnchorLink href="/contact" title="Contact" />
-            <Button type="primary" href="/register">Sign-up</Button>
-            <Button type="default" href="/login">Log-in</Button>
+            {
+              logStatus === true? <Button type="default" href="/logout">Log-out</Button> : <div>
+                <Button type="primary" href="/register">Sign-up</Button>
+                <Button type="default" href="/login">Log-in</Button>
+              </div>
+            }
           </Anchor>
         </div>
         <div className="mobileVisible">
@@ -47,8 +56,12 @@ function AppHeader(props) {
               <AnchorLink href="/" title="Home"/>
               <AnchorLink href="/about" title="About"/>
               <AnchorLink href="/contact" title="Contact" />
-              <Button type="primary" href="/register">Sign-up</Button>
-              <Button type="default" href="/login">Log-in</Button>
+              {
+                logStatus === true ? <Button type="default" href="/logout">Log-out</Button> : <div>
+                  <Button type="primary" href="/register">Sign-up</Button>
+                  <Button type="default" href="/login">Log-in</Button>
+                </div>  
+              }
             </Anchor>
           </Drawer>
         </div>
