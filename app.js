@@ -26,11 +26,13 @@ app.use(cors({
     origin: ['http://localhost:3000']
 }));
 app.use(function(req,res,next){
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     res.setHeader('Access-Control-Allow-Headers', '*',);
     res.setHeader(
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept'
     );
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Range');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); 
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     next();
@@ -68,6 +70,66 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+
+// <-- Post Collection -->
+
+// Specifying schema
+
+const postSchema = mongoose.Schema({
+    title: {
+        type: String,
+        required: [true, "Title is required!"],
+    },
+    content: {
+        type: String,
+        required: [true, "Content is required!"],
+    },
+    imgUrl: {
+        type: String,
+        required: [true, "Imgurl is required!"],
+    },
+});
+
+
+const Post = mongoose.model("Post", postSchema);
+
+const postlist = [
+    new Post({
+        title: "sa",
+        imgUrl: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+        content: "asdassad",
+        id: "4",
+    }),
+    new Post({
+        title: "sa",
+        imgUrl: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+        content: "asdassad",
+        id: "4",
+    }),
+    new Post({
+        title: "sa",
+        imgUrl: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+        content: "asdassad",
+        id: "4",
+    }),
+    new Post({
+        title: "sa",
+        imgUrl: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+        content: "asdassad",
+        id: "4",
+    }),
+];
+
+/*
+Post.insertMany(postlist, function(err, docs){
+    if(err){
+        console.log("Error occured!"); 
+        console.log(err);
+    }
+    console.log("Inserted");
+})
+
+*/
 
 app.route("/")
     .get(function(req,res){
@@ -150,6 +212,27 @@ app.get("/logout", function(req, res){
         });
     }
 });
+
+app.get("/posts", function(req, res){
+
+    
+    Post.find({}, function(err, docs){
+        console.log(docs);
+        
+        res.send(docs);
+    });
+});
+
+app.route("/posts/:id")
+    .get(function(req,res){
+        Post.findOne({_id: id}, function(err,post){
+            if(err){
+                console.log(err);
+            }else{
+                res.send(post);
+            }
+        })
+    })
 
 
 var listener = app.listen(4000, function(){

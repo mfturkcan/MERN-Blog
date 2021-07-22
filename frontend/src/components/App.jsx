@@ -55,30 +55,31 @@ export default function App(){
         <div>
             <Layout >
                 <AppHeader isLoggedIn={isLoggedIn}/>
-                        <Switch>
-                            <Route path="/about">
-                                <About />
-                            </Route>
-                            <Route exact path="/">
-                                <Home />
-                            </Route>
-                            <Route exact path="/post/:id" render={ props=>{
-                                const post = findSpesificPost(props.match.params.id); 
-                                
-                                return <Post id={props.match.params.id} title={post.title} content={post.content} imgUrl={post.imgUrl}/>;
-                            }}/>
-                            <Route exact path="/login" render={ props=> isLoggedIn===true?<Secret />: <Auth pageName="login" handleLogin={ handleLogin }/> } />
-                            <Route exact path="/register" render={ props => isLoggedIn===true?<Secret />: <Auth pageName="register"/> } />
-                            <Route exact path="/secret">
-                                <Secret />
-                            </Route>
-                            <Route exact path="/logout" render={props=>{axios.get("http://localhost:4000/logout", {withCredentials: true}).then(res=>{if(res.data === true){
-                                console.log("Success logout!"); 
-                                setIsLoggedIn(false);
-                                return <Home />;
-                                }
-                            })}}/>
-                        </Switch>
+                    <Switch>                        
+                        <Route path="/about">
+                            <About />
+                        </Route>
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
+                        <Route exact path="/post/:id" render={ props=>{
+                            const post = findSpesificPost(props.match.params.id); 
+                            
+                            return <Post id={props.match.params.id} title={post.title} content={post.content} imgUrl={post.imgUrl}/>;
+                        }}/>
+                        <Route exact path="/login" render={ props=> isLoggedIn===true?<Secret />: <Auth pageName="login" handleLogin={ handleLogin }/> } />
+                        <Route exact path="/register" render={ props => isLoggedIn===true?<Secret />: <Auth pageName="register"/> } />
+                        <Route exact path="/secret">
+                            <Secret />
+                        </Route>
+                        <Route exact path="/logout" render={props=>{axios.get("http://localhost:4000/logout", {withCredentials: true}).then(res=>{if(res.data === true){
+                            console.log("Success logout!"); 
+                            setIsLoggedIn(false);
+                            return <Home />;
+                            }
+                        })}}/>
+                        
+                    </Switch>
                 <Footer />
             </Layout>
         </div>
