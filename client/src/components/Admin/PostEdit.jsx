@@ -1,13 +1,15 @@
 import React from 'react';
-import { Edit, SimpleForm, TextInput, SelectInput, TextField } from 'react-admin';
+import { Edit, SimpleForm, TextInput, TextField } from 'react-admin';
 
 
 const PostEdit = (props) => {
+    console.log(props);
+    console.log("edit");
     return ( 
         <Edit {...props}>
             <SimpleForm>
-                <TextInput source="_id"/>
-                <TextField source="title"/>
+                <TextField source="_id"/>
+                <TextInput source="title"/>
                 <TextInput source="content"/>
                 <TextInput source="imgUrl"/>
             </SimpleForm>

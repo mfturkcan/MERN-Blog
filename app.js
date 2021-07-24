@@ -214,18 +214,28 @@ app.get("/logout", function(req, res){
 });
 
 app.get("/posts", function(req, res){
-
-    
     Post.find({}, function(err, docs){
         console.log(docs);
-        
+        res.setHeader('Content-Range', 'Access-Control-Expose-Headers');
         res.send(docs);
     });
 });
 
+app.post("/posts", function(req, res){
+    console.log("trying to create");
+    const new_post = Post(req.body);
+
+    new_post.save(function(err){
+        if(err){
+            console.log(err);
+        }
+    });
+})
+
 app.route("/posts/:id")
     .get(function(req,res){
-        Post.findOne({_id: id}, function(err,post){
+        console.log(req.params.id);
+        Post.findOne({_id: req.params.id}, function(err,post){
             if(err){
                 console.log(err);
             }else{
@@ -233,6 +243,38 @@ app.route("/posts/:id")
             }
         })
     })
+    .put(function(req, res){
+        const new_post = req.body;
+        Post.findOneAndUpdate({_id: req.params.id}, new_post, function(err, post){
+            if(err){
+                console.log("Error occured");
+                console.log(err);
+            }else{
+                console.log(post);
+            }
+        });
+    })
+    .delete(function(req, res){
+        Post.findOneAndDelete({_id: req.params.id}, function(err, deletedPost){
+            if(err){
+                console.log("Error occured");
+                console.log(err);
+            }else{
+                console.log(deletedPost);
+            }
+        })
+    });
+
+    app.post(function(req, res){
+        console.log("trying to create");
+        const new_post = Post(req.body);
+
+        new_post.save(function(err){
+            if(err){
+                console.log(err);
+            }
+        });
+    });
 
 
 var listener = app.listen(4000, function(){
