@@ -13,7 +13,7 @@ if(module.hot){
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route exact path="/">
+      <Route path="/">
         <App />
       </Route>
       <Route exact path="/admin-panel">

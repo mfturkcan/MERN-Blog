@@ -1,12 +1,15 @@
 import React from 'react';
-import {Image} from 'antd';
+import {Image, Card} from 'antd';
 
 export default function TopImage(){
+
+
+    const imgUrl = "https://www.musicianwithadayjob.com/wp-content/uploads/2018/05/aerial-3246120_1280.jpg";
     return(
         <div className="top-image">
             <img
                 alt="homeImage"
-                src="https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmxvZyUyMGJhY2tncm91bmR8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
+                src={imgUrl}
                 placeholder={
                     <img
                     alt="home-placeholder" 
@@ -18,6 +21,10 @@ export default function TopImage(){
             >
 
             </img>
+                <div className="top-message">
+                    <h1>WELCOME TO MY BLOG</h1>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                </div>
         </div>
     );
 }
