@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {Input, Button} from 'antd';
+import {Input} from 'antd';
 import { useHistory } from 'react-router';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 export default function Auth(props){
 
+
+    const schema = Yup.object().shape({
+        email: Yup.string().email().required("Email must be given!"),
+        password: Yup.string().min(8).max(32).required("Password must be given!"),
+    });
+
+    const {register, reset, handleSubmit, formState: { errors }} = useForm({resolver: yupResolver(schema)});
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [confirmPassword, setConfirmPassword] = useState("");
@@ -24,16 +34,14 @@ export default function Auth(props){
         }
     }
 
-    async function handleSubmit(event){
-        event.preventDefault();
-        const user = {
-            email: email,
-            password: password,
-        }
+    function onSubmitHandler(data){
+        console.log(data);
+        
+
         try{
             console.log(__dirname);
             //  +props.pageName === "login"?"login":"register"
-            await axios.post("http://localhost:4000/"+page, user, {withCredentials: true}).then(res=>{
+            axios.post("http://localhost:4000/"+page, data, {withCredentials: true}).then(res=>{
                 if(res.data === true){
                     props.handleLogin(true); 
                     history.push("/secret");
@@ -42,14 +50,17 @@ export default function Auth(props){
         }catch(e){
             console.log(e);
         }
-        console.log(event);
+        reset();
+        
     }
 
     return(
         <div className="auth">
-            <form onSubmit={handleSubmit}>
-                <Input size="large" type="email" name="email" onChange={handleChange} value={email} placeholder="Email address"/>
-                <Input size="large" type="password" name="password" onChange={handleChange} value={password} placeholder="Password"/>
+            <form onSubmit={handleSubmit(onSubmitHandler)}>
+                <Input size="large" type="email" name="email" {...register('email')}onChange={handleChange} value={email} placeholder="Email address" required/>
+                <p>{errors.email?.message}</p>
+                <Input size="large" type="password" name="password" {...register('password')} onChange={handleChange} value={password} placeholder="Password" required/>
+                <p>{errors.password?.message}</p>
                 {
                     props.pageName === "login"? null: <Input size="large" type="password" name="passwordConfirm" onChange={handleChange} value={confirmPassword} placeholder="Confirm Password"/>    
                 }
